@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootgraduation.mapper.CourseMapper">
+    <update id="updateUserCourse">
+        UPDATE user_course
+        SET course_id = #{courseId}
+        WHERE user_id = #{userId}
+    </update>
+    <delete id="deleteUserCourse">
+        delete from user_course where user_id = #{userId} and course_id = #{courseId}
+    </delete>
+
+    <insert id="setUserCourse">
+        insert into user_course(user_id,course_id) values(#{userId},#{courseId})
+    </insert>
+
+    <select id="findPage" resultType="com.example.springbootgraduation.entity.Course">
+        SELECT course.*, user.nickname AS teacher
+        FROM course
+        LEFT JOIN user ON course.teacher_id = user.id
+        <where>
+            <if test="name != null and name != ''">
+                AND (course.name LIKE CONCAT('%', #{name}, '%') OR user.nickname LIKE CONCAT('%', #{name}, '%'))
+            </if>
+        </where>
+    </select>
+    <select id="checkUserCourseExist" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_course
+        WHERE course_id = #{courseId} AND user_id = #{userId}
+    </select>
+
+    <!--
+        从数据库中查询用户的课程信息
+        将查询结果映射为com.example.springbootgraduation.entity.Course类型
+    -->
+    <select id="getUserCourses" resultType="com.example.springbootgraduation.entity.Course">
+        SELECT course.*
+        FROM course
+                 INNER JOIN user_course ON course.id = user_course.course_id
+        WHERE user_course.user_id = #{userId}
+    </select>
+</mapper>

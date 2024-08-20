@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootgraduation.mapper.UserMapper">
+    <update id="updatePassword">
+        update user set `password` = #{userPasswordDTO.newPassword} where `username` = #{userPasswordDTO.username};
+    </update>
+    <resultMap id="pageUser" type="com.example.springbootgraduation.entity.User">
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="nickname" property="nickname"></result>
+        <result column="email" property="email"></result>
+        <result column="phone" property="phone"></result>
+        <result column="address" property="address"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="avatarUrl" property="avatarUrl"></result>
+        <result column="role" property="role"></result>
+        <collection property="courses" javaType="java.util.ArrayList" ofType="com.example.springbootgraduation.entity.Course">
+            <result column="teacherCourseName" property="name" />
+            <result column="teacherprice" property="price" />
+        </collection>
+        <collection property="userCourses" javaType="java.util.ArrayList" ofType="com.example.springbootgraduation.entity.Course">
+            <result column="userCourseName" property="name" />
+            <result column="userprice" property="price" />
+        </collection>
+    </resultMap>
+
+
+</mapper>
